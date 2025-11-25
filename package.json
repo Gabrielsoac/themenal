@@ -4,9 +4,12 @@
   "description": "The Project created for to personalize UNIX terminals",
   "main": "index.js",
   "type": "module",
+  "bin": {
+    "therminal": "./bin/therminal"
+  },
   "scripts": {
     "dev": "tsx src/index.ts",
-    "build": "tsc"
+    "build": "tsc && cp -r src/themes dist/themes"
   },
   "repository": {
     "type": "git",
@@ -31,6 +34,8 @@
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^24.10.1",
     "@types/terminal-kit": "^2.5.7",
-    "@types/yargs": "^17.0.35"
+    "@types/yargs": "^17.0.35",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }
