@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/Gabrielsoac/therminal/issues"
   },
-  "homepage": "https://github.com/Gabrielsoac/therminal#readme"
+  "homepage": "https://github.com/Gabrielsoac/therminal#readme",
+  "dependencies": {
+    "terminal-kit": "^3.1.2"
+  }
 }
