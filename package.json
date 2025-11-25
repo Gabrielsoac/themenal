@@ -1,0 +1,23 @@
+{
+  "name": "therminal",
+  "version": "1.0.0",
+  "description": "The Project created for to personalize UNIX terminals",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gabrielsoac/therminal.git"
+  },
+  "keywords": [
+    "linux",
+    "terminal"
+  ],
+  "author": "Gabriel Soares",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Gabrielsoac/therminal/issues"
+  },
+  "homepage": "https://github.com/Gabrielsoac/therminal#readme"
+}
