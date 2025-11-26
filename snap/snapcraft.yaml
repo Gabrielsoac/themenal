@@ -1,0 +1,21 @@
+name: themenal
+base: core22
+version: "1.0.0"
+summary: Terminal theme manager
+description: CLI tool to manage terminal colors and themes
+
+grade: stable
+confinement: classic
+
+apps:
+  themenal:
+    command: bin/themenal
+
+parts:
+  themenal:
+    plugin: nodejs
+    source: .
+    organize:
+      bin/themenal: bin/themenal
+      dist: dist
+      node_modules: node_modules
