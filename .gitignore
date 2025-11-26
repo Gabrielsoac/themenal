@@ -1,2 +1,13 @@
+# Project Build
 node_modules
 dist
+
+# Snapcraft build
+prime/
+stage/
+parts/
+*.snap
+overlay
+
+# Logs e arquivos temporários
+*.log
