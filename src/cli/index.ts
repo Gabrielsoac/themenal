@@ -6,7 +6,7 @@ import apply from "./commands/apply.js";
 import generate from "./commands/generate.js";
 
 yargs(hideBin(process.argv))
-  .scriptName("therminal")
+  .scriptName("themenal")
   .usage("$0 <cmd> [args]")
   .command(list)
   .command(preview)
