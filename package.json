@@ -1,11 +1,11 @@
 {
-  "name": "therminal",
+  "name": "themenal",
   "version": "1.0.0",
   "description": "The Project created for to personalize UNIX terminals",
   "main": "index.js",
   "type": "module",
   "bin": {
-    "therminal": "./bin/therminal"
+    "themenal": "./bin/themenal"
   },
   "scripts": {
     "dev": "tsx src/index.ts",
