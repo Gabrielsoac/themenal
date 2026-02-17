@@ -1,4 +1,8 @@
-# 🎨 Themenal
+# Themenal
+
+<header style="display: flex; justify-content: center;">
+   <img style="width: 400px; height: 300px;" src="./img/logo.png" alt="Themenal Logo">
+</header>
 
 **Themenal** is a beautiful and easy-to-use terminal theme manager for Debian/Ubuntu Linux systems. It allows you to apply, preview, and create custom color themes for your terminal with just a few commands.
 
