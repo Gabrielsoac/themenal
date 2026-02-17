@@ -1,0 +1,42 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Architectures: amd64
+Codename: stable
+Components: main
+Date: Tue, 17 Feb 2026 23:43:22 +0000
+Label: Themenal
+Origin: Themenal
+Suite: stable
+MD5Sum:
+ 31ba2d0f6e6c92f640da78ef44aac22d              140 Release
+ eaafd20cdc10b98aacff3c410344c9b9              512 main/binary-amd64/Packages
+ f9dc02b0da4ac13eee30f682823280d0              388 main/binary-amd64/Packages.gz
+SHA1:
+ 40e5f29953b6eabb06f1e233c28ded197f165434              140 Release
+ 2ea0037322d01e300b058e361662fa3a6c50bf80              512 main/binary-amd64/Packages
+ ab4078d4068c66580997bdb157480eecaad45e7b              388 main/binary-amd64/Packages.gz
+SHA256:
+ 24ca15627724ea86bb3b88e9c3eee41a5923cbec1b269e49aaf9ee4e73d23145              140 Release
+ ba0a6603fd9ee21a1e9942fad62aa2934b180d3b9f55780174470b1ece434776              512 main/binary-amd64/Packages
+ b638f23d42e3af1bcc1fe1d4c26863f2e0603ab37ad6e20d9e2dc03fa668d6df              388 main/binary-amd64/Packages.gz
+SHA512:
+ 30c295f17aa9ea78d035924d04f29ad02fac86aa780ce8beb121ba5911f1171d98dfdca09ddc20aeeee3d449eb7d676402291de79bb1c331c9678ad172b43b27              140 Release
+ 295602892bebba9012e390595f3b57c73f3d8a084f2a3c5e053e5ed9337140cecaf126f333747e882c51cdc6f52ee6e9349f7d833fcf5f0d3becb54032ba97e6              512 main/binary-amd64/Packages
+ acb66747f23fbb20eec7fba3e28dd5b9713d4dc26865b1531ae86d8ec9934a0d15961960634de260b07bbd6c48be550bf3c839b1ac886cab576d5e65fb1d578b              388 main/binary-amd64/Packages.gz
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEOM+5WVrmT2eSBuG8E7EGGCg28VsFAmmU/ScACgkQE7EGGCg2
+8Vs/dxAAqPaSVpoLDmVTNRIeHn9xd4CJJVsN9Fhuz5SCYNSsJZi6V541AULcqIjq
+nbK8b3NEODtGn66h+9W6GLcwsSg+qMb5JExeQwzEELxQB8uYthvcd/PfBUrnB17z
+MglsfM0OQIFcvjwXyc9SOO+XYQaOkH4BRtD0iD8Wfv7XWEhIQU/XcHhrrgTGICuF
+DErJC8eGVpEpkOfAhySSTLPwKTnZE0FaY+1nFG5SHx/4NU2QRE2q4qyztg+WPgSP
+7cnWmkyOaTQWOAhVJzr46lvZrKlahkdffrtvXisVf2B6nYXqStc0fSrf7VT/q2qL
+GeJQVHLI/s3N0h/J4yQZ4Mnb1w77sXeDIIB39Fw1BOjvCIOlV353BU/pnmuMd+qr
+3QoG9bc48iV2bYCE6hMhTKO0NlrXSYdHSknkwU3T9tGv70gx3nDVC7X1krh0CU5f
+KZSN0voQUhycDRo5Ag5ZoW5d5DXoUieYiCRdt62RcvMJYU0LQBwRrmPbMW9/wTqI
+hMe/AFeEtajR9XVUPbQOI6E0+B+tMVDiJ3v6AIYNySKGrUr5lrX+N+R7JZzVFXvS
+WftvHEwiCySN2PYohMWsSDx23zvmNqQ475KlnB1bkqk7UqC2BGFGeh6B9idZONHc
+7dDPNVrX3jF529WRMDf3naUH+pJY8bxE5KVetpggCVIrbEu8GIs=
+=pM+Y
+-----END PGP SIGNATURE-----
