@@ -1,35 +1,69 @@
-import fs from "fs";
-import path from "path";
-import yaml from "js-yaml";
-import { fileURLToPath } from "url";
+import terminalKit from "terminal-kit";
+import themeLoader from "../../services/theme-loader.js";
+import configManager from "../../services/config-manager.js";
+import terminalDetector from "../../services/terminal-detector.js";
+import applyTheme from "../../services/applyTheme.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const term = terminalKit.terminal;
 
-export default {
+/**
+ * Apply command - applies a theme to the terminal
+ */
+const apply = {
   command: "apply <theme>",
-  describe: "Apply the theme",
-  builder: (y: any) => y.positional("theme", { type: "string" }),
+  describe: "Apply a theme to your terminal",
+  builder: (y: any) =>
+    y.positional("theme", {
+      type: "string",
+      describe: "Name of the theme to apply",
+    }),
   handler: ({ theme }: any) => {
-    const filepath = path.resolve(__dirname, "../themes", `${theme}.yml`);
-
-    if (!fs.existsSync(filepath)) {
-      console.error("Theme not found:", filepath);
+    // Check if theme exists
+    if (!themeLoader.themeExists(theme)) {
+      term.red(`\nError: Theme "${theme}" not found.\n`);
+      term("Use ").green("themenal list").yellow(" to see available themes.\n\n");
       return;
     }
 
-    const data = yaml.load(fs.readFileSync(filepath, "utf8")) as any;
+    // Load the theme
+    const themeData = themeLoader.loadTheme(theme);
+    if (!themeData) {
+      term.red(`\nError: Could not load theme "${theme}".\n\n`);
+      return;
+    }
 
-    const dest = path.resolve(process.env.HOME!, ".config/terminal-colors.d");
-    fs.mkdirSync(dest, { recursive: true });
+    // Detect terminal type
+    const terminalType = terminalDetector.detect();
+    const terminalName = terminalDetector.getTerminalName(terminalType);
 
-    const output = Object.entries(data)
-      .map(([k, v]) => `export ${k.toUpperCase()}=${v}`)
-      .join("\n");
+    term.bold(`\nDetected terminal: `).cyan(terminalName).bold(`\n\n`);
 
-    fs.writeFileSync(path.join(dest, "theme.sh"), output);
+    // Check if terminal is supported
+    if (!terminalDetector.isSupported(terminalType)) {
+      term.red(`Error: ${terminalName} is not currently supported.\n`);
+      term.yellow("Currently supported terminals:\n");
+      term("  • GNOME Terminal\n\n");
+      term.dim("More terminal support coming soon!\n\n");
+      return;
+    }
 
-    console.log("Applied with success!");
-    console.log("Please, restart your terminal.");
+    // Apply the theme
+    try {
+      term.bold(`Applying theme "`).green(theme).bold(`"...\n\n`);
+
+      if (terminalType === "gnome") {
+        applyTheme.gnome(themeData);
+      }
+
+      // Save current theme to config
+      configManager.setCurrentTheme(theme);
+
+      term.bold.green(`\n✔ Theme "${theme}" applied successfully!\n\n`);
+    } catch (error: any) {
+      term.red(`\nError applying theme: ${error.message}\n\n`);
+      process.exit(1);
+    }
   },
 };
+
+export default apply;

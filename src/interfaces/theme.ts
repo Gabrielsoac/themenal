@@ -1,4 +1,6 @@
 export interface Theme {
+  background: string;
+  foreground: string;
   black: string;
   red: string;
   green: string;
