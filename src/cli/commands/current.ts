@@ -4,9 +4,7 @@ import configManager from "../../services/config-manager.js";
 
 const term = terminalKit.terminal;
 
-/**
- * Current command - displays the currently active theme
- */
+
 const current = {
   command: "current",
   describe: "Show the currently active theme",
@@ -37,7 +35,6 @@ const current = {
     
     term.dim(`Applied: ${appliedDate}\n\n`);
 
-    // Display color preview
     term.bold("Color Preview:\n\n");
 
     const displayColor = (name: string, hexColor: string) => {

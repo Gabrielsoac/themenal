@@ -23,28 +23,40 @@
 
 ## 🚀 Installation
 
-### Install from npm (Recommended)
+### Option 1: Debian/Ubuntu Package (.deb) - Recommended
+
+The easiest way to install Themenal on Debian or Ubuntu systems is using the provided `.deb` package. This will install the `themenal` command globally.
+
+1. **Download** the latest `themenal_*.deb` from the [Releases](https://github.com/Gabrielsoac/therminal/releases) page.
+2. **Install** it using `dpkg` or `apt`:
 
 ```bash
-npm install -g themenal
+sudo dpkg -i themenal_1.0.0_amd64.deb
+sudo apt install -f
 ```
 
-### Install from Source
+---
 
-```bash
-# Clone the repository
-git clone https://github.com/Gabrielsoac/therminal.git
-cd therminal
+### Option 2: For Contributors (Source)
 
-# Install dependencies
-npm install
+If you want to contribute new themes or features, install from source:
 
-# Build the project
-npm run build
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/Gabrielsoac/therminal.git
+   cd therminal
+   ```
 
-# Link globally
-npm link
-```
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Build and test**:
+   ```bash
+   npm run build
+   themenal list
+   ```
 
 ## 📖 Usage
 
@@ -228,4 +240,4 @@ Give a ⭐️ if this project helped you!
 
 ---
 
-Made with ❤️ for the terminal community
+Made with ❤️ for the dev community

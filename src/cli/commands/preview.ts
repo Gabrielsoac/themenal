@@ -3,9 +3,6 @@ import themeLoader from "../../services/theme-loader.js";
 
 const term = terminalKit.terminal;
 
-/**
- * Preview command - shows a visual preview of a theme
- */
 const preview = {
   command: "preview <theme>",
   describe: "Show a visual preview of a theme",
@@ -15,21 +12,18 @@ const preview = {
       describe: "Name of the theme to preview",
     }),
   handler: ({ theme }: any) => {
-    // Check if theme exists
     if (!themeLoader.themeExists(theme)) {
       term.red(`\nError: Theme "${theme}" not found.\n`);
       term("Use ").green("themenal list").yellow(" to see available themes.\n\n");
       return;
     }
 
-    // Load the theme
     const themeData = themeLoader.loadTheme(theme);
     if (!themeData) {
       term.red(`\nError: Could not load theme "${theme}".\n\n`);
       return;
     }
 
-    // Display theme preview
     term.bold.cyan("\n╔══════════════════════════════════════╗\n");
     term.bold.cyan("║  Theme Preview: ").bold.yellow(theme.padEnd(19)).bold.cyan("║\n");
     term.bold.cyan("╚══════════════════════════════════════╝\n\n");

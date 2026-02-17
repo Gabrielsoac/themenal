@@ -4,22 +4,13 @@ import yaml from "js-yaml";
 import { fileURLToPath } from "url";
 import { Theme } from "../interfaces/theme.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const _filename = typeof __filename !== 'undefined' ? __filename : fileURLToPath(import.meta.url);
+const _dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(_filename);
 
-/**
- * Get the themes directory path
- * When running from dist, themes are in dist/themes
- */
 function getThemesPath(): string {
-  // The compiled file is in dist/services, so themes are in dist/themes
-  return path.resolve(__dirname, "../themes");
+  return path.resolve(_dirname, "../themes");
 }
 
-/**
- * Theme loader service
- * Handles loading and validating theme files
- */
 class ThemeLoader {
   private themesPath: string;
 
@@ -27,9 +18,6 @@ class ThemeLoader {
     this.themesPath = getThemesPath();
   }
 
-  /**
-   * Get all available theme names
-   */
   getAvailableThemes(): string[] {
     try {
       if (!fs.existsSync(this.themesPath)) {
@@ -47,9 +35,6 @@ class ThemeLoader {
     }
   }
 
-  /**
-   * Load a theme by name
-   */
   loadTheme(themeName: string): Theme | null {
     try {
       const themePath = this.getThemePath(themeName);
@@ -61,7 +46,6 @@ class ThemeLoader {
       const content = fs.readFileSync(themePath, "utf-8");
       const data = yaml.load(content) as any;
 
-      // Validate theme structure
       if (!this.isValidTheme(data)) {
         console.error(`Invalid theme structure in ${themeName}`);
         return null;
@@ -74,11 +58,7 @@ class ThemeLoader {
     }
   }
 
-  /**
-   * Get the full path to a theme file
-   */
   private getThemePath(themeName: string): string {
-    // Try both .yml and .yaml extensions
     const ymlPath = path.join(this.themesPath, `${themeName}.yml`);
     const yamlPath = path.join(this.themesPath, `${themeName}.yaml`);
 
@@ -88,9 +68,6 @@ class ThemeLoader {
     return yamlPath;
   }
 
-  /**
-   * Validate theme structure
-   */
   private isValidTheme(data: any): boolean {
     const requiredFields = [
       "background",
@@ -119,9 +96,6 @@ class ThemeLoader {
     });
   }
 
-  /**
-   * Check if a theme exists
-   */
   themeExists(themeName: string): boolean {
     const themePath = this.getThemePath(themeName);
     return fs.existsSync(themePath);

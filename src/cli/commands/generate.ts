@@ -5,12 +5,10 @@ import yaml from "js-yaml";
 import { fileURLToPath } from "url";
 
 const term = terminalKit.terminal;
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const _filename = typeof __filename !== 'undefined' ? __filename : fileURLToPath(import.meta.url);
+const _dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(_filename);
 
-/**
- * Generate command - interactively creates a new theme
- */
+
 export default {
   command: "generate",
   describe: "Create a new theme interactively",
@@ -59,7 +57,6 @@ export default {
       let hex = "";
       if (value) hex = value.trim();
 
-      // Validate hex color
       if (!hex.startsWith("#") || (hex.length !== 7 && hex.length !== 4)) {
         term.red(" ✗ Invalid hex color format. Use #RRGGBB or #RGB\n");
         return;
@@ -68,7 +65,6 @@ export default {
       colors[key] = hex;
     }
 
-    // Create theme object
     const themeData = {
       background: colors.background,
       foreground: colors.foreground,
@@ -91,10 +87,9 @@ export default {
     };
 
     const yamlStr = yaml.dump(themeData);
-    const themesPath = path.resolve(__dirname, "../../themes");
+    const themesPath = path.resolve(_dirname, "../../themes");
     const filepath = path.join(themesPath, `${name}.yml`);
 
-    // Ensure themes directory exists
     if (!fs.existsSync(themesPath)) {
       fs.mkdirSync(themesPath, { recursive: true });
     }

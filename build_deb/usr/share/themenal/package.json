@@ -1,0 +1,70 @@
+{
+  "name": "themenal",
+  "version": "1.0.0",
+  "description": "A beautiful terminal theme manager for Debian/Ubuntu Linux",
+  "main": "dist/cli/index.js",
+  "type": "module",
+  "bin": {
+    "themenal": "./bin/themenal"
+  },
+  "scripts": {
+    "dev": "tsx src/cli/index.ts",
+    "build": "tsc && cp -r src/themes dist/themes",
+    "build:bin": "npm run build && esbuild src/cli/index.ts --bundle --platform=node --outfile=dist/bundle/index.js && node --experimental-sea-config scripts/sea-config.json && cp $(which node) bin/themenal-bin && postject bin/themenal-bin NODE_SEA_BLOB dist/bundle/themenal.blob --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2",
+    "start": "node dist/cli/index.js",
+    "prepublishOnly": "npm run build"
+  },
+  "pkg": {
+    "assets": [
+      "dist/themes/**/*"
+    ],
+    "outputPath": "bin"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gabrielsoac/therminal.git"
+  },
+  "keywords": [
+    "linux",
+    "terminal",
+    "theme",
+    "colors",
+    "debian",
+    "ubuntu",
+    "gnome-terminal",
+    "cli"
+  ],
+  "author": "Gabriel Soares",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Gabrielsoac/therminal/issues"
+  },
+  "homepage": "https://github.com/Gabrielsoac/therminal#readme",
+  "dependencies": {
+    "js-yaml": "^4.1.1",
+    "terminal-kit": "^3.1.2",
+    "yargs": "^18.0.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^24.10.1",
+    "@types/terminal-kit": "^2.5.7",
+    "@types/yargs": "^17.0.35",
+    "@vercel/ncc": "^0.38.4",
+    "esbuild": "^0.27.3",
+    "pkg": "^5.8.1",
+    "postject": "^1.0.0-alpha.6",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.7.0",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "README.md",
+    "LICENSE"
+  ]
+}

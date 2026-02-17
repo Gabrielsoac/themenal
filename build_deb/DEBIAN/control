@@ -1,0 +1,9 @@
+Package: themenal
+Version: 1.0.0
+Section: utils
+Priority: optional
+Architecture: amd64
+Maintainer: Gabriel Soares <gabriel@example.com>
+Depends: nodejs (>= 14.0.0)
+Description: Terminal theme manager for Debian/Ubuntu systems
+ Themes and colors manager for GNOME Terminal and others.

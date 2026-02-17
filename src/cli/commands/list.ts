@@ -4,9 +4,6 @@ import configManager from "../../services/config-manager.js";
 
 const term = terminalKit.terminal;
 
-/**
- * List command - displays all available themes
- */
 const list = {
   command: "list",
   describe: "List all available themes",
