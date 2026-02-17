@@ -40,6 +40,10 @@ jobs:
 
     - name: Release
       uses: softprops/action-gh-release@v2
-      if: startsWith(github.ref, 'refs/tags/')
-      with:
+      if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/'))
+      with: 
         files: themenal_*.deb
+        tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'latest' }}
+        name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'Latest Build' }}
+        prerelease: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        make_latest: ${{ startsWith(github.ref, 'refs/tags/') }}
