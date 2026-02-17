@@ -1,7 +1,7 @@
 # Themenal
 
 <div align="center">
-  <img src="./img/logo.png" width="400" height="300" alt="Themenal Logo">
+  <img src="./img/logo.png" width="600" height="auto" alt="Themenal Logo">
 </div>
 
 **Themenal** is a beautiful and easy-to-use terminal theme manager for Debian/Ubuntu Linux systems. It allows you to apply, preview, and create custom color themes for your terminal with just a few commands.
@@ -27,9 +27,31 @@
 
 ## 🚀 Installation
 
-### Option 1: Debian/Ubuntu Package (.deb) - Recommended
+### Option 1: APT Repository (Recommended for Updates)
 
-The easiest way to install Themenal on Debian or Ubuntu systems is using the provided `.deb` package. This will install the `themenal` command globally.
+This is the preferred method as it allows you to receive automatic updates.
+
+1. **Add the GPG key**:
+   ```bash
+   curl -sS https://Gabrielsoac.github.io/therminal/public.key | sudo gpg --dearmor -o /usr/share/keyrings/themenal-archive-keyring.gpg
+   ```
+
+2. **Add the repository**:
+   ```bash
+   echo "deb [signed-by=/usr/share/keyrings/themenal-archive-keyring.gpg] https://Gabrielsoac.github.io/therminal/repo stable main" | sudo tee /etc/apt/sources.list.d/themenal.list
+   ```
+
+3. **Install Themenal**:
+   ```bash
+   sudo apt update
+   sudo apt install themenal
+   ```
+
+---
+
+### Option 2: Debian/Ubuntu Package (.deb)
+
+If you don't want to add a repository, you can install the standalone package.
 
 1. **Download** the latest `themenal_*.deb` from the [Releases](https://github.com/Gabrielsoac/therminal/releases) page.
 2. **Install** it using `dpkg` or `apt`:
@@ -41,7 +63,7 @@ sudo apt install -f
 
 ---
 
-### Option 2: For Contributors (Source)
+### Option 3: For Contributors (Source)
 
 If you want to contribute new themes or features, install from source:
 
