@@ -1,11 +1,7 @@
-name: Build and Package
+name: Build, Package and Publish
 
 on:
   push:
-    branches: [ main ]
-    tags:
-      - 'v*'
-  pull_request:
     branches: [ main ]
 
 jobs:
@@ -17,38 +13,57 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Use Node.js
+    - name: Setup Node
       uses: actions/setup-node@v4
       with:
-        node-version: '20'
-        cache: 'npm'
+        node-version: 20
 
-    - name: Install dependencies
-      run: npm install
+    - name: Install deps
+      run: npm ci
 
     - name: Build project
       run: npm run build
 
-    - name: Build .deb package
+    - name: Build .deb
       run: chmod +x scripts/build-deb.sh && ./scripts/build-deb.sh
 
-    - name: Upload .deb Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: themenal-deb
-        path: themenal_*.deb
-
-    - name: Clean and Create Release
-      env:
-        GH_TOKEN: ${{ github.token }}
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    - name: Import GPG key
       run: |
-        # Deleta a release e a tag 'latest' se existirem
-        gh release delete latest --yes || true
-        git push origin :refs/tags/latest || true
-        
-        # Cria a nova release
-        gh release create latest themenal_*.deb \
-          --title "Latest Release" \
-          --notes "Automatic build of the latest version from main branch." \
-          --target main
+        echo "${{ secrets.GPG_PRIVATE_KEY }}" | base64 -d > private.key
+        gpg --batch --import private.key
+        rm private.key
+
+    - name: Update APT repo
+      run: |
+        VERSION="1.0.0"
+        mkdir -p repo/pool/main/t/themenal
+        mv themenal_${VERSION}_amd64.deb repo/pool/main/t/themenal/
+
+        cd repo
+
+        dpkg-scanpackages pool /dev/null > dists/stable/main/binary-amd64/Packages
+        gzip -f dists/stable/main/binary-amd64/Packages
+
+        apt-ftparchive release dists/stable > dists/stable/Release
+
+        gpg --default-key ${{ secrets.GPG_KEY_ID }} \
+            --batch --yes \
+            --pinentry-mode loopback \
+            --passphrase "${{ secrets.GPG_PASSPHRASE }}" \
+            -abs -o dists/stable/Release.gpg dists/stable/Release
+
+        gpg --default-key ${{ secrets.GPG_KEY_ID }} \
+            --batch --yes \
+            --pinentry-mode loopback \
+            --passphrase "${{ secrets.GPG_PASSPHRASE }}" \
+            --clearsign -o dists/stable/InRelease dists/stable/Release
+
+        cd ..
+
+    - name: Commit and push repo
+      run: |
+        git config user.name "github-actions"
+        git config user.email "actions@github.com"
+        git add repo
+        git commit -m "Auto update APT repository"
+        git push

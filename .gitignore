@@ -12,6 +12,6 @@ overlay
 # Logs e arquivos temporários
 *.log
 
-# Arquivos de build
-*.deb
-themenal_*.deb
+# Secrets
+private.key
+private.key.base64
