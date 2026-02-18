@@ -12,88 +12,94 @@ jobs:
       contents: write
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
-
-    - name: Configure Git
-      run: |
-        git config user.name "github-actions"
-        git config user.email "actions@github.com"
 
     - name: Setup Node
       uses: actions/setup-node@v4
       with:
         node-version: 20
 
-    - name: Install dependencies
+    - name: Install deps
       run: npm ci
 
-    - name: Version, Build and Repository Update
-      id: publish
-      env:
-        GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
-        GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+    - name: Configure Git
       run: |
-        # 1. Bump version locally
-        npm version patch -m "chore: release v%s [skip ci]" --no-git-tag-version
+        git config user.name "github-actions"
+        git config user.email "actions@github.com"
+
+    - name: Bump version
+      id: version
+      run: |
+        npm version patch -m "chore: bump version to %s [skip ci]"
         VERSION=$(node -p "require('./package.json').version")
         echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
-        
-        # 2. Build project and .deb
-        npm run build
-        chmod +x scripts/build-deb.sh
-        ./scripts/build-deb.sh
-        
-        # 3. Import GPG key
+        git push --follow-tags
+
+    - name: Build project
+      run: npm run build
+
+    - name: Build .deb
+      run: chmod +x scripts/build-deb.sh && ./scripts/build-deb.sh
+
+    - name: Import GPG key
+      run: |
         echo "${{ secrets.GPG_PRIVATE_KEY }}" | base64 -d > private.key
         gpg --batch --import private.key
         rm private.key
-        
-        # 4. Update APT repo
+
+    - name: Update APT repo
+      run: |
+        VERSION=${{ steps.version.outputs.VERSION }}
+
         mkdir -p repo/pool/main/t/themenal
-        cp themenal_${VERSION}_amd64.deb repo/pool/main/t/themenal/
-        
-        mkdir -p repo/dists/stable/main/binary-amd64
+        mv themenal_${VERSION}_amd64.deb repo/pool/main/t/themenal/
+
         cd repo
+        mkdir -p dists/stable/main/binary-amd64
+
         dpkg-scanpackages pool /dev/null > dists/stable/main/binary-amd64/Packages
         gzip -kf dists/stable/main/binary-amd64/Packages
-        
+
         apt-ftparchive release dists/stable > dists/stable/Release
-        
-        gpg --default-key "$GPG_KEY_ID" \
+
+        gpg --default-key ${{ secrets.GPG_KEY_ID }} \
             --batch --yes \
             --pinentry-mode loopback \
-            --passphrase "$GPG_PASSPHRASE" \
+            --passphrase "${{ secrets.GPG_PASSPHRASE }}" \
             -abs -o dists/stable/Release.gpg dists/stable/Release
-            
-        gpg --default-key "$GPG_KEY_ID" \
+
+        gpg --default-key ${{ secrets.GPG_KEY_ID }} \
             --batch --yes \
             --pinentry-mode loopback \
-            --passphrase "$GPG_PASSPHRASE" \
+            --passphrase "${{ secrets.GPG_PASSPHRASE }}" \
             --clearsign -o dists/stable/InRelease dists/stable/Release
+
         cd ..
-        
-        # 5. Commit and Push everything
-        git add repo package.json package-lock.json
-        git commit -m "chore: release v${VERSION} [skip ci]"
-        git tag v${VERSION}
-        git push origin main --tags --force
-        
+
+    - name: Commit and push repo
+      run: |
+        git config user.name "github-actions"
+        git config user.email "actions@github.com"
+        git add repo
+        git commit -m "Auto update APT repository" || echo "No changes"
+        git push
+
+    - name: Delete previous releases
+      uses: dev-drprasad/delete-tag-and-release@v1.1
+      with:
+        delete_release: true
+        tag_name: latest
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v2
       with:
-        tag_name: v${{ steps.publish.outputs.VERSION }}
-        name: v${{ steps.publish.outputs.VERSION }}
-        body: |
-          Automated release for version ${{ steps.publish.outputs.VERSION }}.
-          
-          **APT Installation:**
-          ```bash
-          sudo apt update && sudo apt install themenal
-          ```
+        tag_name: v${{ steps.version.outputs.VERSION }}
+        name: themenal v${{ steps.version.outputs.VERSION }}
         make_latest: true
-        files: themenal_${{ steps.publish.outputs.VERSION }}_amd64.deb
+        files: themenal_${{ steps.version.outputs.VERSION }}_amd64.deb
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
