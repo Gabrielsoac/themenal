@@ -6,29 +6,38 @@ on:
 
 jobs:
   build:
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
     runs-on: ubuntu-latest
     permissions:
       contents: write
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
     - name: Setup Node
       uses: actions/setup-node@v4
       with:
         node-version: 20
 
-    - name: Install deps
+    - name: Install dependencies
       run: npm ci
+
+    - name: Bump version (patch)
+      id: bump
+      run: |
+        npm version patch -m "chore: bump version to %s [skip ci]"
+        VERSION=$(node -p "require('./package.json').version")
+        echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+    - name: Push version bump
+      run: |
+        git push --follow-tags
 
     - name: Build project
       run: npm run build
-
-    - name: Extract version from package.json
-      id: version
-      run: |
-        VERSION=$(node -p "require('./package.json').version")
-        echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
     - name: Build .deb
       run: chmod +x scripts/build-deb.sh && ./scripts/build-deb.sh
@@ -41,7 +50,7 @@ jobs:
 
     - name: Update APT repo
       run: |
-        VERSION=${{ steps.version.outputs.VERSION }}
+        VERSION=${{ steps.bump.outputs.VERSION }}
 
         mkdir -p repo/pool/main/t/themenal
         mv themenal_${VERSION}_amd64.deb repo/pool/main/t/themenal/
@@ -68,15 +77,15 @@ jobs:
 
         cd ..
 
-    - name: Commit and push repo
+    - name: Commit and push APT repo
       run: |
         git config user.name "github-actions"
         git config user.email "actions@github.com"
         git add repo
-        git commit -m "Auto update APT repository" || echo "No changes"
+        git commit -m "chore: update APT repository for v${{ steps.bump.outputs.VERSION }}" || echo "No changes"
         git push
 
-    - name: Delete previous releases
+    - name: Delete previous latest release
       uses: dev-drprasad/delete-tag-and-release@v1.1
       with:
         delete_release: true
@@ -87,9 +96,9 @@ jobs:
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v2
       with:
-        tag_name: v${{ steps.version.outputs.VERSION }}
-        name: themenal v${{ steps.version.outputs.VERSION }}
+        tag_name: v${{ steps.bump.outputs.VERSION }}
+        name: themenal v${{ steps.bump.outputs.VERSION }}
         make_latest: true
-        files: themenal_${{ steps.version.outputs.VERSION }}_amd64.deb
+        files: themenal_${{ steps.bump.outputs.VERSION }}_amd64.deb
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
