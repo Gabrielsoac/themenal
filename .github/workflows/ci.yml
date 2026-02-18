@@ -24,6 +24,12 @@ jobs:
     - name: Build project
       run: npm run build
 
+    - name: Extract version from package.json
+      id: version
+      run: |
+        VERSION=$(node -p "require('./package.json').version")
+        echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
     - name: Build .deb
       run: chmod +x scripts/build-deb.sh && ./scripts/build-deb.sh
 
@@ -35,11 +41,13 @@ jobs:
 
     - name: Update APT repo
       run: |
-        VERSION="1.0.0"
+        VERSION=${{ steps.version.outputs.VERSION }}
+
         mkdir -p repo/pool/main/t/themenal
         mv themenal_${VERSION}_amd64.deb repo/pool/main/t/themenal/
 
         cd repo
+        mkdir -p dists/stable/main/binary-amd64
 
         dpkg-scanpackages pool /dev/null > dists/stable/main/binary-amd64/Packages
         gzip -kf dists/stable/main/binary-amd64/Packages
@@ -65,5 +73,23 @@ jobs:
         git config user.name "github-actions"
         git config user.email "actions@github.com"
         git add repo
-        git commit -m "Auto update APT repository"
+        git commit -m "Auto update APT repository" || echo "No changes"
         git push
+
+    - name: Delete previous releases
+      uses: dev-drprasad/delete-tag-and-release@v1.1
+      with:
+        delete_release: true
+        tag_name: latest
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: v${{ steps.version.outputs.VERSION }}
+        name: themenal v${{ steps.version.outputs.VERSION }}
+        make_latest: true
+        files: themenal_${{ steps.version.outputs.VERSION }}_amd64.deb
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
