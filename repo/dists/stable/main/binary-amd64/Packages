@@ -1,0 +1,15 @@
+Package: themenal
+Version: 1.0.0
+Architecture: amd64
+Maintainer: Gabriel Soares <gabriel@example.com>
+Depends: nodejs (>= 14.0.0)
+Filename: pool/main/t/themenal/themenal_1.0.0_amd64.deb
+Size: 938852
+MD5sum: 9cee34311cf0e956260104df75e3aab7
+SHA1: d4e09513cc31ed03fe815643e0f59aa9c037080e
+SHA256: 9d3f78295718afb10f1f314d112930fc1d0935387c24e5470f35b6b5dad82b58
+Section: utils
+Priority: optional
+Description: Terminal theme manager for Debian/Ubuntu systems
+ Themes and colors manager for GNOME Terminal and others.
+
