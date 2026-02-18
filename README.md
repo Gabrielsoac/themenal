@@ -33,12 +33,15 @@ This is the preferred method as it allows you to receive automatic updates.
 
 1. **Add the GPG key**:
    ```bash
-   curl -sS https://Gabrielsoac.github.io/therminal/public.key | sudo gpg --dearmor -o /usr/share/keyrings/themenal-archive-keyring.gpg
+   curl -fsSL https://gabrielsoac.github.io/themenal/public.key \
+   | sudo gpg --dearmor -o /usr/share/keyrings/themenal-archive-keyring.gpg
    ```
 
 2. **Add the repository**:
    ```bash
-   echo "deb [signed-by=/usr/share/keyrings/themenal-archive-keyring.gpg] https://Gabrielsoac.github.io/therminal/repo stable main" | sudo tee /etc/apt/sources.list.d/themenal.list
+   echo "deb [signed-by=/usr/share/keyrings/themenal-archive-keyring.gpg] \
+   https://gabrielsoac.github.io/themenal/repo stable main" \
+   | sudo tee /etc/apt/sources.list.d/themenal.list
    ```
 
 3. **Install Themenal**:
