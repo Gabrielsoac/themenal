@@ -4,10 +4,10 @@ Architecture: amd64
 Maintainer: Gabriel Soares <gabriel@example.com>
 Depends: nodejs (>= 14.0.0)
 Filename: pool/main/t/themenal/themenal_1.0.0_amd64.deb
-Size: 938880
-MD5sum: 33ec85d926ea529f9e81193e6b8d2b7b
-SHA1: 4e81e3250643cac72338ecbf545172e7f0694982
-SHA256: 42b093b2b70fa61f466ddfa40fabfc80566f6d25b064a10767c5495d60addb2e
+Size: 938846
+MD5sum: 8ad96c8be241787429069aa73012e36f
+SHA1: 2f2788097f117de4ee3db45f9d32bfa12e29876b
+SHA256: 4aef2723ce3141dcc2ff2984dfe9487cf90184e49a9436a96a275879116eb9d7
 Section: utils
 Priority: optional
 Description: Terminal theme manager for Debian/Ubuntu systems
