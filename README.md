@@ -56,7 +56,7 @@ This is the preferred method as it allows you to receive automatic updates.
 
 If you don't want to add a repository, you can install the standalone package.
 
-1. **Download** the latest `themenal_*.deb` from the [Releases](https://github.com/Gabrielsoac/therminal/releases) page.
+1. **Download** the latest `themenal_*.deb` from the [Releases](https://github.com/Gabrielsoac/theminal/releases) page.
 2. **Install** it using `dpkg` or `apt`:
 
 ```bash
@@ -72,8 +72,8 @@ If you want to contribute new themes or features, install from source:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/Gabrielsoac/therminal.git
-   cd therminal
+   git clone https://github.com/Gabrielsoac/theminal.git
+   cd theminal
    ```
 
 2. **Install dependencies**:
@@ -152,8 +152,8 @@ We welcome contributions! Whether you want to add new themes, support for more t
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/Gabrielsoac/therminal.git
-   cd therminal
+   git clone https://github.com/Gabrielsoac/themenal.git
+   cd themenal
    ```
 
 2. **Install dependencies**:
@@ -229,7 +229,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for more detailed guidelines.
 ### Project Structure
 
 ```
-therminal/
+themenal/
 ├── src/
 │   ├── cli/
 │   │   ├── commands/      # CLI command implementations
@@ -261,7 +261,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🐛 Issues
 
-Found a bug or have a feature request? Please open an issue on [GitHub Issues](https://github.com/Gabrielsoac/therminal/issues).
+Found a bug or have a feature request? Please open an issue on [GitHub Issues](https://github.com/Gabrielsoac/themenal/issues).
 
 ## ⭐ Show your support
 
