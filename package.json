@@ -1,6 +1,6 @@
 {
   "name": "themenal",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A beautiful terminal theme manager for Debian/Ubuntu Linux",
   "main": "dist/cli/index.js",
   "type": "module",
