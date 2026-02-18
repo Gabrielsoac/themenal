@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Configuration
+VERSION=$(node -p "require('./package.json').version")
 PACKAGE_NAME="themenal"
-VERSION="1.0.0"
 ARCH="amd64"
 MAINTAINER="Gabriel Soares <gabriel@example.com>"
 DESCRIPTION="Terminal theme manager for Debian/Ubuntu systems"

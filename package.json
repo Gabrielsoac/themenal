@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "tsx src/cli/index.ts",
     "build": "tsc && cp -r src/themes dist/themes",
-    "build:bin": "npm run build && esbuild src/cli/index.ts --bundle --platform=node --outfile=dist/bundle/index.js && node --experimental-sea-config scripts/sea-config.json && cp $(which node) bin/themenal-bin && postject bin/themenal-bin NODE_SEA_BLOB dist/bundle/themenal.blob --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2",
+    "build:bin": "npm run build && esbuild src/cli/index.ts --bundle --platform=node --format=cjs --outfile=dist/bundle/index.js --external:terminal-kit --packages=external && node --experimental-sea-config scripts/sea-config.json && cp $(which node) bin/themenal-bin && postject bin/themenal-bin NODE_SEA_BLOB dist/bundle/themenal.blob --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2",
     "start": "node dist/cli/index.js",
     "prepublishOnly": "npm run build"
   },

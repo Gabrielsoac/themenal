@@ -32,32 +32,35 @@ jobs:
     - name: Bump version
       id: version
       run: |
-        # Não damos push aqui ainda! Apenas geramos o commit local e a tag
+        # 1. Atualiza a versão localmente
         npm version patch -m "chore: bump version to %s [skip ci]"
-        VERSION=$(node -p "require('./package.json').version")
-        echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
-
-    - name: Build project
-      run: npm run build
+        # 2. Guarda a nova versão numa variável do GitHub Actions
+        NEW_VER=$(node -p "require('./package.json').version")
+        echo "VERSION=$NEW_VER" >> $GITHUB_OUTPUT
 
     - name: Build .deb
-      run: chmod +x scripts/build-deb.sh && ./scripts/build-deb.sh
+      run: |
+        # O script agora vai ler a versão automática (ex: 1.0.4)
+        chmod +x scripts/build-deb.sh && ./scripts/build-deb.sh
 
     - name: Update APT repo
       run: |
         VERSION=${{ steps.version.outputs.VERSION }}
         mkdir -p repo/pool/main/t/themenal
+        # Copiamos (cp) para o repo, mantendo o original na raiz para o Release
         cp themenal_${VERSION}_amd64.deb repo/pool/main/t/themenal/
         
         cd repo
-        # ... (restante da lógica de apt-ftparchive)
+        # ... (teus comandos de apt-ftparchive e gpg)
         cd ..
 
-    - name: Final Git Push (Bump + Repo)
+    - name: Commit and push changes
       run: |
+        git config user.name "github-actions"
+        git config user.email "actions@github.com"
         git add .
-        git commit -m "chore: update apt repo and version [skip ci]" || echo "No changes"
-        # Push de tudo: commit do version, commit do repo e as tags
+        git commit -m "release: update version and apt repo to ${{ steps.version.outputs.VERSION }} [skip ci]" || echo "No changes"
+        # O push envia o commit do version e o commit do repo de uma vez só
         git push origin main --follow-tags
 
     - name: Create GitHub Release
