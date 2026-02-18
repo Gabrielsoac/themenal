@@ -15,3 +15,7 @@ overlay
 # Secrets
 private.key
 private.key.base64
+
+# Build artifacts
+build_deb/
+*.deb
